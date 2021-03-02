@@ -75,27 +75,31 @@ const potusParse = require('./potusParse');
 const url = 'https://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States';
 
 const presidentsCvs = function(){
-  rp(url)
-  .then(function(html) {
-    //success!
-    const wikiUrls = [];
-    for (let i = 0; i < 46; i++) {
-        wikiUrls.push($('.wikitable b a', html)[i].attribs.href);
-    }
-    return Promise.all(
-      wikiUrls.map(function(url) {
-        return potusParse('https://en.wikipedia.org' + url);
-      })
-    );
-  })
-  .then(function(presidents) {
-    return presidents;
-  })
-  .catch(function(err) {
-    //handle error
-    console.log(err);
-  });
+  return rp(url)
+    .then(function(html) {
+      //success!
+      const wikiUrls = [];
+      for (let i = 0; i < 46; i++) {
+          wikiUrls.push($('.wikitable b a', html)[i].attribs.href);
+      }
+      return Promise.all(
+        wikiUrls.map(function(url) {
+          return potusParse('https://en.wikipedia.org' + url);
+        })
+      );
+    })
+    .catch(function(err) {
+      //handle error
+      console.log(err);
+    });
 }
+
+// let data = presidentsCvs;
+
+// data().then(res => console.log(res))
+
+
+
 
 module.exports = presidentsCvs;
 

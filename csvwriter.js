@@ -2,17 +2,24 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const presidentsCvs = require('./potusScraper');
 
 const csvWriter = createCsvWriter({
-  path: 'presidential2.csv',
+  path: 'presidential.csv',
   header: [
     {id: 'name', title: 'Name'},
     {id: 'birthday', title: 'Birthday'}
   ]
 });
 
-const data = presidentsCvs();
-console.log(presidentsCvs())
+let data = presidentsCvs;
 
 
-// csvWriter
-//   .writeRecords(data)
-//   .then(()=> console.log('The CSV file was written successfully'));
+const asyncCvsWriter = async () => {
+  data()
+  .then(res => {
+    csvWriter
+    .writeRecords(res)
+    .then(()=> console.log('The CSV file was written successfully'));
+  })
+}
+
+asyncCvsWriter();
+
